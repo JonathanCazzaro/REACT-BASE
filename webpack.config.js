@@ -7,16 +7,13 @@ module.exports = {
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.bundle.js',
+    filename: '[name].[chunkhash].bundle.js',
   },
   resolve: {
     alias: {
       react: path.resolve(__dirname, 'node_modules', 'react'),
     },
-    modules: [
-      path.resolve(__dirname, 'src'),
-      'node_modules'
-    ],    
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
   module: {
     rules: [
@@ -27,11 +24,7 @@ module.exports = {
       },
       {
         test: /\.s?css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|jpg|svg|jpeg|gif)$/, // handle images loading
@@ -53,9 +46,19 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   optimization: {
-    minimizer: [
-      new CssMinimizerPlugin(),
-    ],
+    minimizer: [new CssMinimizerPlugin()],
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          test: /node_modules\/.*/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+    runtimeChunk: {
+      name: 'manifest',
+    },
   },
   devtool: this.mode === 'production' ? 'source-map' : 'inline-source-map',
 };
