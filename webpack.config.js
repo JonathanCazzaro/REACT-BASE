@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -44,7 +46,17 @@ module.exports = {
       template: './src/assets/index.html',
     }),
     new MiniCssExtractPlugin(),
+    new CompressionPlugin({
+      test: /\.js(\?.*)?$/i,
+    }),
+    new BundleAnalyzer(),
   ],
+  performance: {
+    hints: 'warning',
+    assetFilter(assetFilename) {
+      return assetFilename.endsWith('.js.gz');
+    },
+  },
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
     splitChunks: {

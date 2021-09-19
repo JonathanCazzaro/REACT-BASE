@@ -10,5 +10,10 @@
         "regenerator": true
       }
     ]
-  ]
+  ],
+  "env": {
+    "production": {
+      "plugins": ["@babel/plugin-syntax-dynamic-import"]
+    }
+  }
 }
