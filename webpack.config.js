@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.bundle.js',
@@ -32,13 +33,21 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(png|jpg|svg|jpeg|gif)$/, // handle images loading
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/, // handle fonts loading
+        type: 'asset/resource',
+      },
     ],
-  },
-  devServer: {
-    static: './src',
   },
   plugins: [
     new HtmlWebpackPlugin({
+      title: 'My New React Website',
+      lang: 'fr',
+      favicon: './src/assets/img/favicon.png',
       template: './src/assets/index.html',
     }),
     new MiniCssExtractPlugin(),
