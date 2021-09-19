@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import './app.scss';
 import chat from '../../assets/img/chat.jpg';

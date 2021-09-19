@@ -57,4 +57,5 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
+  devtool: this.mode === 'production' ? 'source-map' : 'inline-source-map',
 };
