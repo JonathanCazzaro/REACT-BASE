@@ -9,32 +9,45 @@ module.exports = {
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[chunkhash].bundle.js',
+    filename: 'scripts/[name].[chunkhash].bundle.js',
+    clean: true,
   },
   resolve: {
     alias: {
       react: path.resolve(__dirname, 'node_modules', 'react'),
     },
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(jsx?)$/i,
         exclude: /node_modules/,
         use: ['babel-loader'],
       },
       {
-        test: /\.s?css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        test: /\.s?css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+          'postcss-loader',
+        ],
       },
       {
-        test: /\.(png|jpg|svg|jpeg|gif)$/, // handle images loading
+        test: /\.(png|jpe?g|svg|gif|ico)$/i, // handle images loading
         type: 'asset/resource',
+        generator: {
+          filename: 'images/[hash].[ext]',
+        },
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/, // handle fonts loading
+        test: /\.(woff2?|eot|ttf|otf)$/i, // handle fonts loading
         type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name].[ext]',
+        },
       },
     ],
   },
@@ -45,14 +58,17 @@ module.exports = {
       favicon: './src/assets/img/favicon.png',
       template: './src/assets/index.html',
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'styles/styles.css',
+      chunkFilename: 'styles.css',
+    }),
     new CompressionPlugin({
       test: /\.js(\?.*)?$/i,
     }),
     new BundleAnalyzer(),
   ],
   performance: {
-    hints: 'warning',
+    hints: false,
     assetFilter(assetFilename) {
       return assetFilename.endsWith('.js.gz');
     },

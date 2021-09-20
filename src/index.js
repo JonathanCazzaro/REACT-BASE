@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 
 import App from './components/App';
 
+import './tailwind.css';
+
 const content = (
   // <React.StrictMode>
   <App />

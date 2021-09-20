@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+}
+
+@layer components {
+  .title {
+    @apply text-blue-800 text-3xl px-4 py-12 font-bold bg-yellow-300 text-center;
+  }
+}
+
+@layer utilities {
+
+}
